@@ -56,7 +56,8 @@ Exports referenced by the value prop are accessed by passing the context into Re
 
 ### useEffect
 
-####1 fetchBooks would only be called once (after initial render) if 2nd argument [] is empty.
+1.
+fetchBooks would only be called once (after initial render) if 2nd argument [] is empty.
 However in this case we are monitoring state change of fetchBooks reference.
 
     // App.js
@@ -73,9 +74,11 @@ re-renders may refer to a variable from the previous render and not be updated t
 
 (for more information, refer to the useCallback explanation below).
 
-####2. useEffect callback cannot be an async function.
+2.
+useEffect callback cannot be an async function.
 
-####3.  useEffect callback can only optionally return a function (not values or strings).
+3.
+useEffect callback can only optionally return a function (not values or strings).
 The returned function executes as a cleanup function before the useEffect callback executes again on subsequent re-renders.
 For instance, click handlers set up in useEffect still remain from previous re-renders,
 as well as new click handlers from updated renders.
