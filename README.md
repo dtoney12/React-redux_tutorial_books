@@ -17,12 +17,14 @@ Application screenshot:
 A context is a design pattern to share functions and variables throughout the application.
 The context is first instantiated from the React builder function createContext().
 
-    **books.js:
+    // context/books.js
     
     const BooksContext = createContext();
 
 A provider is a functional component that allows children component to be able to access context functions and variables.
 
+    // context/books.js
+    
        function PROVIDER_COMPONENT({children}) {...
             const createBook = async (title)=> { ...
             const valueToShare = {
@@ -36,6 +38,8 @@ In this case, BooksContext.Provider is exported (default) as BooksContext.
 Context functions and variables are shared as a values prop.
 Child access is specified through nesting of children component within the parent provider component.
 
+    // context/books.js
+    
         return <BooksContext.Provider  value={valueToShare}>
             {children}
         </BooksContext.Provider>
@@ -44,9 +48,99 @@ Child access is specified through nesting of children component within the paren
 
 Exports referenced by the value prop are accessed by passing the context into React function useContext().
 
+    // components/BookCreate.js
+    
         import BooksContext from "../context/books";
         ...
         const { createBook } = useContext(BooksContext);
+
+### useEffect
+
+1. fetchBooks would only be called once (after initial render) if 2nd argument [] is empty.
+However in this case we are monitoring state change of fetchBooks reference.
+
+    // App.js
+        useEffect(() => {
+                fetchBooks();
+            }
+        , [fetchBooks]);
+
+If 2nd argument above is empty array, then ESLint will report this warning:
+ESLINT warning "React Hook useEffect has a missing dependency: 'fetchBooks'.  Either include it or remove the dependency array"
+This warning refers to possible stale variable reference in fetchBooks in which subsequent
+re-renders may refer to a variable from the previous render and not be updated to the intended new value.
+
+More information below concerning bugs due to monitor object re-rendering in useEffect (check the useCallback explanation).
+
+2. useEffect callback cannot be an async function.
+
+3.  useEffect callback can only optionally return a function (not values or strings).
+The returned function executes as a cleanup function before the useEffect callback executes again on subsequent re-renders.
+For instance, click handlers set up in useEffect still remain from previous re-renders,
+as well as new click handlers from updated renders.
+
+    // App.js
+
+    const [counter, setCounter] = useState(0);
+    useEffect(()=> {
+        const listener = ()=> console.log(counter);
+        document.body.addEventListener("click", listener);
+    }, [counter];
+
+In the example above, each increment of counter will result in an additional click handler instance.
+Cleanup functions can remove those stale click handlers.
+  
+    useEffect(()=> {
+        ...
+        return () => document.body.removeEventListener("click", listener);
+        ...
+
+### Spread Operator
+
+updatedBook spread operator ensures all updates from database are copied over to the local book state.
+
+    const editBook = async (id, title)=> { ...
+        return {...book, ...updatedBook};
+
+### useCallback
+
+useCallback() with empty 2nd argument returns a stable reference to the arrow function 1st argument.
+Subsequent re-renders will continue to return a reference to that same function.
+So, when useEffect in the App executes its callback including the fetchBooks function which in turn executes setBooks,
+and books state updates in the Provider component causing it to re-render,
+the callback function referenced by fetchBooks will remain unchanged.
+Therefor useEffect will not detect that its reference to fetchBooks has changed, and will not execute the callback again.
+In this way we can avoid continuous re-rendering of the Provider component (which would also re-render the child App)
+
+    // context/books.js
+    
+        const fetchBooks = useCallback(async () => {
+            const response = await axios.get('http://localhost:3001/books');
+            setBooks(response.data);
+        },[]);
+
+    // App.js
+        useEffect(() => {
+                fetchBooks();
+            }
+        , [fetchBooks]);
+
+    ** without useCallback
+    initial render -> useEffect -> fetchBooks -> setBooks ->
+    ...re-render Provider component + re-render child App ->
+    ...re-initialize fetchBooks function ->
+    ...useEffect detects update to fetchBooks -> useEffect -> fetchBooks (repeat...)
+
+    <img width="1423" alt="Screen Shot 2023-07-01 at 10 20 24 PM" src="https://github.com/dtoney12/udemy-react-redux-tutorial-books_section6/assets/24409524/632f9712-7be2-4cef-be5b-db3f63158489">
+
+    ** with useCallback
+    initial render -> useEffect -> fetchBooks -> setBooks ->
+    ...re-render Provider component + re-render child App ->
+    ...fetchBooks function reference remains stable (end)
+    
+    <img width="1436" alt="Screen Shot 2023-07-01 at 10 27 47 PM" src="https://github.com/dtoney12/udemy-react-redux-tutorial-books_section6/assets/24409524/8785dcd0-eb85-4e2f-b57a-ac58d0bc864d">
+
+
 
 
 
