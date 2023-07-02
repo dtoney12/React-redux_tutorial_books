@@ -131,21 +131,24 @@ In this way we can avoid continuous re-rendering of the Provider component (whic
             }
         , [fetchBooks]);
 
-** without useCallback
-initial render -> useEffect -> fetchBooks -> setBooks ->
+
+This is the cycle of what will happen if the fetchBooks is not wrapped in useCallback upon initiation of the function:
+
+Initial render -> useEffect -> fetchBooks -> setBooks ->
 ...re-render Provider component + re-render child App ->
 ...re-initialize fetchBooks function ->
 ...useEffect detects update to fetchBooks -> useEffect -> fetchBooks (repeat...)
 
-Browser continuous fetching without useCallback:
+We can demonstrate this cycle in the browser which continuously fetches:
 <img width="1423" alt="Screen Shot 2023-07-01 at 10 20 24 PM" src="https://github.com/dtoney12/udemy-react-redux-tutorial-books_section6/assets/24409524/632f9712-7be2-4cef-be5b-db3f63158489">
 
-** with useCallback
-initial render -> useEffect -> fetchBooks -> setBooks ->
+We can fix this by wrapping fetchBooks in the useCallback hook.  The sequence of execution will halt after a single re-render of the App:
+
+Initial render -> useEffect -> fetchBooks -> setBooks ->
 ...re-render Provider component + re-render child App ->
 ...fetchBooks function reference remains stable (end)
 
-Browser fetching normally with useCallback:
+The browser will fetch normally when useCallback is used to prevent fetchBooks from referencing a different functional object:
 <img width="1436" alt="Screen Shot 2023-07-01 at 10 27 47 PM" src="https://github.com/dtoney12/udemy-react-redux-tutorial-books_section6/assets/24409524/8785dcd0-eb85-4e2f-b57a-ac58d0bc864d">
 
 
