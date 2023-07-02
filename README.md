@@ -1,6 +1,6 @@
 # Course content and app created by Stephen Grider
-## Udemy course “Modern React with Redux [2023 Update]
-### Books Application design specified in Section 6, “How to Handle Forms”
+## from Udemy course “Modern React with Redux [2023 Update]
+### This application "Books" is detailed in Sections 6 - 9
 
 
 Application screenshot:
