@@ -131,20 +131,22 @@ In this way we can avoid continuous re-rendering of the Provider component (whic
             }
         , [fetchBooks]);
 
-    ** without useCallback
-    initial render -> useEffect -> fetchBooks -> setBooks ->
-    ...re-render Provider component + re-render child App ->
-    ...re-initialize fetchBooks function ->
-    ...useEffect detects update to fetchBooks -> useEffect -> fetchBooks (repeat...)
+** without useCallback
+initial render -> useEffect -> fetchBooks -> setBooks ->
+...re-render Provider component + re-render child App ->
+...re-initialize fetchBooks function ->
+...useEffect detects update to fetchBooks -> useEffect -> fetchBooks (repeat...)
 
-    <img width="1423" alt="Screen Shot 2023-07-01 at 10 20 24 PM" src="https://github.com/dtoney12/udemy-react-redux-tutorial-books_section6/assets/24409524/632f9712-7be2-4cef-be5b-db3f63158489">
+Browser continuous fetching without useCallback:
+<img width="1423" alt="Screen Shot 2023-07-01 at 10 20 24 PM" src="https://github.com/dtoney12/udemy-react-redux-tutorial-books_section6/assets/24409524/632f9712-7be2-4cef-be5b-db3f63158489">
 
-    ** with useCallback
-    initial render -> useEffect -> fetchBooks -> setBooks ->
-    ...re-render Provider component + re-render child App ->
-    ...fetchBooks function reference remains stable (end)
-    
-    <img width="1436" alt="Screen Shot 2023-07-01 at 10 27 47 PM" src="https://github.com/dtoney12/udemy-react-redux-tutorial-books_section6/assets/24409524/8785dcd0-eb85-4e2f-b57a-ac58d0bc864d">
+** with useCallback
+initial render -> useEffect -> fetchBooks -> setBooks ->
+...re-render Provider component + re-render child App ->
+...fetchBooks function reference remains stable (end)
+
+Browser fetching normally with useCallback:
+<img width="1436" alt="Screen Shot 2023-07-01 at 10 27 47 PM" src="https://github.com/dtoney12/udemy-react-redux-tutorial-books_section6/assets/24409524/8785dcd0-eb85-4e2f-b57a-ac58d0bc864d">
 
 
 
