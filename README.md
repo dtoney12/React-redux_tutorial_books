@@ -71,7 +71,7 @@ ESLINT warning "React Hook useEffect has a missing dependency: 'fetchBooks'.  Ei
 This warning refers to possible stale variable reference in fetchBooks in which subsequent
 re-renders may refer to a variable from the previous render and not be updated to the intended new value.
 
-More information below concerning bugs due to monitor object re-rendering in useEffect (check the useCallback explanation).
+(for more information, refer to the useCallback explanation below).
 
 2. useEffect callback cannot be an async function.
 
@@ -81,12 +81,12 @@ For instance, click handlers set up in useEffect still remain from previous re-r
 as well as new click handlers from updated renders.
 
     // App.js
-
-    const [counter, setCounter] = useState(0);
-    useEffect(()=> {
-        const listener = ()=> console.log(counter);
-        document.body.addEventListener("click", listener);
-    }, [counter];
+    
+      const [counter, setCounter] = useState(0);
+      useEffect(()=> {
+          const listener = ()=> console.log(counter);
+          document.body.addEventListener("click", listener);
+      }, [counter];
 
 In the example above, each increment of counter will result in an additional click handler instance.
 Cleanup functions can remove those stale click handlers.
