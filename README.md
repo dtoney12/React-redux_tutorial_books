@@ -6,16 +6,19 @@
 Application screenshot:
 <img width="1440" alt="Screen Shot 2023-07-01 at 9 59 14 PM" src="https://github.com/dtoney12/udemy-react-redux-tutorial-books_section6/assets/24409524/47875a76-f99e-4dbf-8fed-1826b29b9110">
 
-# To run:
+## To run:
   1. start JSON server via npm run server
   2. start app via npm start
 
 ## Technical notes:
 
-# Context
+### Context
+
 A context is a design pattern to share functions and variables throughout the application.
 The context is first instantiated from the React builder function createContext().
 
+    **books.js:
+    
     const BooksContext = createContext();
 
 A provider is a functional component that allows children component to be able to access context functions and variables.
