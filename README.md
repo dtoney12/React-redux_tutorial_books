@@ -118,7 +118,7 @@ causing a possible re-initialization of the fetchBooks function.  However, since
 Therefore useEffect in the App will not detect that its reference to fetchBooks has changed, and will not execute its callback again.
 In this way we can avoid continuous re-rendering of the Provider component (which would also re-render the child App).  The sequence of events in explained below for both the improper case in which useCallback is not utilized, and the proper usage of useCallback.
 
-    // context/books.js
+    // context/books.js  (Provider component)
     
         const fetchBooks = useCallback(async () => {
             const response = await axios.get('http://localhost:3001/books');
