@@ -2,6 +2,8 @@
 ## Udemy course “Modern React with Redux [2023 Update]
 ### Books Application design specified in Section 6, “How to Handle Forms”
 
+
+Application screenshot:
 <img width="1440" alt="Screen Shot 2023-07-01 at 9 59 14 PM" src="https://github.com/dtoney12/udemy-react-redux-tutorial-books_section6/assets/24409524/47875a76-f99e-4dbf-8fed-1826b29b9110">
 
 
