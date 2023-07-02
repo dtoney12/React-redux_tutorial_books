@@ -67,8 +67,9 @@ However in this case we are monitoring state change of fetchBooks reference.
             }
         , [fetchBooks]);
 
-If 2nd argument above is empty array, then ESLint will report this warning:
-ESLINT warning "React Hook useEffect has a missing dependency: 'fetchBooks'.  Either include it or remove the dependency array"
+If 2nd argument above is empty array, then ESLint will report a warning:
+"React Hook useEffect has a missing dependency: 'fetchBooks'.  Either include it or remove the dependency array".
+
 This warning refers to possible stale variable reference in fetchBooks in which subsequent
 re-renders may refer to a variable from the previous render and not be updated to the intended new value.
 
