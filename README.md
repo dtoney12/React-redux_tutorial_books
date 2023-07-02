@@ -112,11 +112,11 @@ updatedBook spread operator ensures all updates from database are copied over to
 
 useCallback() with empty 2nd argument returns a stable reference to the arrow function 1st argument.
 Subsequent re-renders will continue to return a reference to that same function.
-So, when useEffect in the App executes its callback including the fetchBooks function which in turn executes setBooks,
-and books state updates in the Provider component causing it to re-render,
-the callback function referenced by fetchBooks will remain unchanged.
-Therefor useEffect will not detect that its reference to fetchBooks has changed, and will not execute the callback again.
-In this way we can avoid continuous re-rendering of the Provider component (which would also re-render the child App)
+So, when useEffect in the App executes its callback, the Provider component will re-render since state has changed (setBooks),
+causing a possible re-initialization of the fetchBooks function.  However, since we have wrapped fetchBooks function reference in useCallback, fetchBooks reference will remain unchanged.
+
+Therefore useEffect in the App will not detect that its reference to fetchBooks has changed, and will not execute its callback again.
+In this way we can avoid continuous re-rendering of the Provider component (which would also re-render the child App).  The sequence of events in explained below for both the improper case in which useCallback is not utilized, and the proper usage of useCallback.
 
     // context/books.js
     
