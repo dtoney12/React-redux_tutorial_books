@@ -1,6 +1,6 @@
-# Course content and app created by Stephen Grider
-## from Udemy course “Modern React with Redux [2023 Update]
-### This application "Books" is detailed in Sections 6 - 9
+# Books App
+## from Udemy course “Modern React with Redux [2023 Update]" 
+### This application is detailed in Sections 6 - 9
 
 
 
