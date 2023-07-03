@@ -18,11 +18,11 @@ Application screenshot:
 
 A context is a design pattern to share functions and variables throughout the application.
 The context is first instantiated from the React builder function createContext().
-
+```
     // context/books.js
     
     const BooksContext = createContext();
-
+```
 A provider is a functional component that allows children component to be able to access context functions and variables.
 
 ```
@@ -41,7 +41,7 @@ A React context Provider component is returned from the provider functional comp
 In this case, BooksContext.Provider is exported (default) as BooksContext.
 Context functions and variables are shared as a values prop.
 Child access is specified through nesting of children component within the parent provider component.
-
+```
     // context/books.js
     
         return <BooksContext.Provider  value={valueToShare}>
@@ -49,15 +49,15 @@ Child access is specified through nesting of children component within the paren
         </BooksContext.Provider>
         ...
         export default BooksContext;
-
+```
 Exports referenced by the value prop are accessed by passing the context into React function useContext().
-
+```
     // components/BookCreate.js
     
         import BooksContext from "../context/books";
         ...
         const { createBook } = useContext(BooksContext);
-
+```
 ### useEffect
 
 1.
@@ -72,8 +72,9 @@ However in this case we are monitoring state change of fetchBooks reference.
         , [fetchBooks]);
 
 If 2nd argument above is empty array, then ESLint will report a warning:
+```
 "React Hook useEffect has a missing dependency: 'fetchBooks'.  Either include it or remove the dependency array".
-
+```
 This warning refers to possible stale variable reference in fetchBooks in which subsequent
 re-renders may refer to a variable from the previous render and not be updated to the intended new value.
 
@@ -87,7 +88,7 @@ useEffect callback can only optionally return a function (not values or strings)
 The returned function executes as a cleanup function before the useEffect callback executes again on subsequent re-renders.
 For instance, click handlers set up in useEffect still remain from previous re-renders,
 as well as new click handlers from updated renders.
-
+```
     // App.js
     
       const [counter, setCounter] = useState(0);
@@ -96,22 +97,22 @@ as well as new click handlers from updated renders.
           const listener = ()=> console.log(counter);
           document.body.addEventListener("click", listener);
       }, [counter];
-
+```
 In the example above, each increment of counter will result in an additional click handler instance.
 Cleanup functions can remove those stale click handlers.
-  
+```
     useEffect(()=> {
         ...
         return () => document.body.removeEventListener("click", listener);
         ...
-
+```
 ### Spread Operator
 
 updatedBook spread operator ensures all updates from database are copied over to the local book state.
-
+```
     const editBook = async (id, title)=> { ...
         return {...book, ...updatedBook};
-
+```
 ### useCallback
 
 useCallback() with empty 2nd argument returns a stable reference to the arrow function 1st argument.
@@ -121,20 +122,21 @@ causing a possible re-initialization of the fetchBooks function.  However, since
 
 Therefore useEffect in the App will not detect that its reference to fetchBooks has changed, and will not execute its callback again.
 In this way we can avoid continuous re-rendering of the Provider component (which would also re-render the child App).  The sequence of events in explained below for both the improper case in which useCallback is not utilized, and the proper usage of useCallback.
-
+```
     // context/books.js  (Provider component)
     
         const fetchBooks = useCallback(async () => {
             const response = await axios.get('http://localhost:3001/books');
             setBooks(response.data);
         },[]);
-
+```
+```
     // App.js
         useEffect(() => {
                 fetchBooks();
             }
         , [fetchBooks]);
-
+```
 
 This is the cycle of what will happen if the fetchBooks is not wrapped in useCallback upon initiation of the function:
 
