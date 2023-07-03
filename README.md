@@ -25,6 +25,7 @@ The context is first instantiated from the React builder function createContext(
 
 A provider is a functional component that allows children component to be able to access context functions and variables.
 
+```
     // context/books.js
     
        function PROVIDER_COMPONENT({children}) {...
@@ -34,6 +35,7 @@ A provider is a functional component that allows children component to be able t
                 ...
        ...
        export { PROVIDER_COMPONENT };
+```
 
 A React context Provider component is returned from the provider functional component.
 In this case, BooksContext.Provider is exported (default) as BooksContext.
